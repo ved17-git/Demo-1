@@ -1,3 +1,4 @@
+import { log } from "console";
 import { User } from "../Models/userModel.js";
 import { generateToken } from "../utils/token.js";
 import bcrypt from 'bcrypt';
@@ -88,7 +89,46 @@ export const login = async (req, res) => {
 
 
 
+//GET ALL USERS
+export const getUsers=async(req,res)=>{
+    const users=await User.find()
+   
+    try {
+        if(users){
+            res.status(200).json({message:"All the users", data:users})
+        }else{
+            res.status(200).json({message:"No users found",})
+        }
+        
+    } catch (error) {
+        console.log('get users error', error);
+        res.status(500).json({message:"error getting users"})
+    }
 
+}
+
+
+
+//GET BY ID
+export const getById = async (req,res)=>{
+const _id=req.params.id
+
+
+try {
+    const userById=await User.findOne({_id})
+
+    if(userById){
+        res.status(200).json({message:"User By Id", data:userById})
+    }else{
+        res.status(200).json({message:"No user found",})
+    }
+    
+} catch (error) {
+    console.log('get users error', error);
+    res.status(500).json({message:"error getting users"})
+}
+
+}
 
 
 
@@ -109,4 +149,3 @@ export const logout = (req, res) => {
 
 
 
-// added some comments in controller 
