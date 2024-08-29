@@ -89,6 +89,52 @@ export const login = async (req, res) => {
 
 
 
+//DELETE USER
+
+export const deleteUser= async (req,res)=>{
+const _id=req.params.id
+
+try {
+    const user=await User.findByIdAndDelete({_id})
+
+    if(user){
+        return res.status(200).json({message:"Deleted Successfully"})
+    }else{
+        return res.status(500).json({message:"Cannot Delete"})
+    }
+
+} catch (error) {
+    console.log("delete Error", error);
+    return res.status(500).json({ message: "delete Error" });
+}
+}
+
+
+//UPDATE USER 
+
+export const updateUser=async(req,res)=>{
+    const _id=req.params.id
+    const {name,email,password}=req.body
+
+  try {
+    const user=await User.findByIdAndUpdate(_id,{name,email,password})
+
+    if(user){
+        return res.status(200).json({message:"User Updated Successfully",updateUser:user})
+    }else{
+        return res.status(500).json({message:"User not Found"})
+    }
+  } catch (error) {
+    console.log("update Error", error);
+    return res.status(500).json({ message: "update Error" });
+  }
+
+
+}
+
+
+
+
 //GET ALL USERS
 export const getUsers=async(req,res)=>{
     const users=await User.find()
@@ -129,8 +175,6 @@ try {
 }
 
 }
-
-
 
 
 
